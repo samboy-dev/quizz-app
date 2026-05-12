@@ -1,0 +1,45 @@
+<div class="page-wrapper">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-name">Quiz<span>Blitz</span></div>
+    </div>
+    <h1 class="page-title">Enter <span>PIN</span></h1>
+    <p class="page-subtitle">Get the PIN from your host and join the quiz!</p>
+
+    @if (error(); as err) {
+      <div class="alert alert-error">
+        <span>⚠</span> {{ err }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Game PIN</label>
+        <input formControlName="pin" type="text" class="pin-input"
+          placeholder="0000" maxlength="8" autocomplete="off"
+          [class.has-error]="form.get('pin')?.invalid && form.get('pin')?.touched" />
+        @if (form.get('pin')?.invalid && form.get('pin')?.touched) {
+          <div class="error-msg">
+            Please enter a valid PIN
+          </div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="loading()">
+        @if (!loading()) {
+          <span>Join Quiz →</span>
+        }
+        @if (loading()) {
+          <span>Checking PIN...</span>
+        }
+      </button>
+    </form>
+
+    <div style="margin-top: 24px; text-align: center;">
+      <a routerLink="/admin/login" style="color: var(--text-muted); font-size: 0.85rem;">
+        Admin? Login here
+      </a>
+    </div>
+  </div>
+</div>

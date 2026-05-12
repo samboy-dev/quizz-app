@@ -1,0 +1,85 @@
+<div class="admin-layout">
+  <header class="admin-header">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-name">Quiz<span>Blitz</span> <span style="color:var(--text-muted);font-size:0.85rem;font-weight:400;font-family:'DM Sans',sans-serif;">Admin</span></div>
+    </div>
+    <button class="btn btn-outline btn-sm" (click)="logout()">Logout</button>
+  </header>
+
+  <main class="admin-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+      <h2 class="admin-section-title" style="margin-bottom:0;">Your Quizzes</h2>
+      <button class="btn btn-primary btn-sm" (click)="openModal()">+ New Quiz</button>
+    </div>
+
+    @if (loading()) {
+      <div class="loader"><div class="spinner"></div><p>Loading quizzes...</p></div>
+    }
+
+    @if (!loading()) {
+      @if (quizzes().length === 0) {
+        <div style="text-align:center; padding:60px; color:var(--text-muted);">
+          <div style="font-size:3rem; margin-bottom:16px;">📋</div>
+          <div>No quizzes yet. Create your first one!</div>
+        </div>
+      }
+
+      @for (quiz of quizzes(); track quiz.id) {
+        <div class="quiz-card">
+          <div class="quiz-card-icon">📋</div>
+          <div class="quiz-card-info">
+            <div class="quiz-card-title">{{ quiz.title }}</div>
+            <div class="quiz-card-meta">
+              <span class="badge" [class.badge-waiting]="quiz.status==='waiting'" [class.badge-active]="quiz.status==='active'" [class.badge-finished]="quiz.status==='finished'">
+                {{ quiz.status }}
+              </span>
+              <span>PIN: <strong>{{ quiz.pin }}</strong></span>
+            </div>
+          </div>
+          <div class="quiz-card-actions">
+            <button class="btn btn-outline btn-sm" (click)="manageQuestions(quiz.id!)">Questions</button>
+            <button class="btn btn-outline btn-sm" (click)="monitor(quiz.id!)">Monitor</button>
+            <button class="btn btn-outline btn-sm" (click)="viewRanking(quiz.id!)">Ranking</button>
+            @if (quiz.status === 'waiting') {
+              <button class="btn btn-success btn-sm" (click)="setStatus(quiz,'active')">Start</button>
+            }
+            @if (quiz.status === 'active') {
+              <button class="btn btn-accent btn-sm" (click)="setStatus(quiz,'finished')">End</button>
+            }
+            <button class="btn btn-danger btn-sm" (click)="deleteQuiz(quiz.id!)">Delete</button>
+          </div>
+        </div>
+      }
+    }
+  </main>
+</div>
+
+<!-- Create Modal -->
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">Create New Quiz</h3>
+      <form [formGroup]="createForm">
+        <div class="form-group">
+          <label>Quiz Title</label>
+          <input formControlName="title" type="text" placeholder="e.g. General Knowledge Round" />
+          @if (createForm.get('title')?.invalid && createForm.get('title')?.touched) {
+            <div class="error-msg">Title required (min 3 chars)</div>
+          }
+        </div>
+        <div class="form-group">
+          <label>PIN Code</label>
+          <input formControlName="pin" type="text" placeholder="e.g. 1234" maxlength="8" class="pin-input" />
+          @if (createForm.get('pin')?.invalid && createForm.get('pin')?.touched) {
+            <div class="error-msg">PIN required (4-8 chars)</div>
+          }
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="createQuiz()">Create Quiz</button>
+      </div>
+    </div>
+  </div>
+}

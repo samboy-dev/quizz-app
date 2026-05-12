@@ -1,0 +1,47 @@
+<div class="page-wrapper">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-name">Quiz<span>Blitz</span></div>
+    </div>
+
+    @if (activeQuiz(); as quiz) {
+      <div style="margin-bottom:24px; padding:14px 18px; background:var(--surface2); border-radius:var(--radius-sm); border:1px solid var(--border);">
+        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Joining</div>
+        <div style="font-weight:700; font-size:1.1rem;">{{ quiz.title }}</div>
+      </div>
+    }
+
+    <h1 class="page-title">Who are <span>you?</span></h1>
+    <p class="page-subtitle">Enter your details to join the quiz.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input formControlName="name" type="text" placeholder="e.g. Sam Johnson" />
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+          <div class="error-msg">
+            Please enter your name
+          </div>
+        }
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input formControlName="phone" type="tel" placeholder="e.g. +974 5000 0000" />
+        @if (form.get('phone')?.invalid && form.get('phone')?.touched) {
+          <div class="error-msg">
+            Please enter a valid phone number
+          </div>
+        }
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        @if (!loading) {
+          <span>Start Quiz →</span>
+        }
+        @if (loading) {
+          <span>Joining...</span>
+        }
+      </button>
+    </form>
+  </div>
+</div>

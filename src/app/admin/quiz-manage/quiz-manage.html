@@ -1,0 +1,100 @@
+<div class="admin-layout">
+  <header class="admin-header">
+    <button class="btn btn-outline btn-sm" (click)="back()">← Back</button>
+    <div style="font-family:'Syne',sans-serif; font-weight:800;">Manage Questions</div>
+    <button class="btn btn-primary btn-sm" (click)="openCreate()">+ Add Question</button>
+  </header>
+
+  <main class="admin-content">
+    @if (loading()) {
+      <div class="loader"><div class="spinner"></div><p>Loading questions...</p></div>
+    }
+
+    @if (!loading()) {
+      @if (questions().length === 0) {
+        <div style="text-align:center; padding:60px; color:var(--text-muted);">
+          <div style="font-size:3rem; margin-bottom:16px;">❓</div>
+          <p>No questions yet. Add your first question!</p>
+        </div>
+      }
+
+      @for (q of questions(); track q.id; let i = $index) {
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+            <div style="display:flex; gap:12px; align-items:flex-start; flex:1;">
+              <span style="background:var(--primary-glow); color:var(--primary); font-family:'Syne',sans-serif; font-weight:800;
+                width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                {{ i + 1 }}
+              </span>
+              <div style="font-weight:600; line-height:1.5;">{{ q.text }}</div>
+            </div>
+            <div style="display:flex; gap:8px; flex-shrink:0; margin-left:16px;">
+              <button class="btn btn-outline btn-sm" (click)="openEdit(q)">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteQuestion(q.id!)">Delete</button>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            @for (opt of q.options; track opt.id; let j = $index) {
+              <div
+                style="padding:10px 14px; border-radius:8px; font-size:0.85rem; display:flex; align-items:center; gap:8px;"
+                [style.background]="opt.id === q.correctOptionId ? 'rgba(74,222,128,0.1)' : 'var(--surface2)'"
+                [style.border]="opt.id === q.correctOptionId ? '1px solid rgba(74,222,128,0.3)' : '1px solid var(--border)'">
+                <span style="font-weight:700; font-size:0.75rem; opacity:0.6;">{{ getLabel(j) }}</span>
+                {{ opt.text }}
+                @if (opt.id === q.correctOptionId) {
+                  <span style="margin-left:auto; color:var(--success);">✓</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </main>
+</div>
+
+<!-- Question Modal -->
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" style="max-width:600px;" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">{{ editingId ? 'Edit Question' : 'New Question' }}</h3>
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label>Question Text</label>
+          <input formControlName="text" type="text" placeholder="Enter your question..." />
+          @if (form.get('text')?.invalid && form.get('text')?.touched) {
+            <div class="error-msg">Question text required</div>
+          }
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block; font-size:0.8rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); margin-bottom:12px;">
+            Answer Options
+          </label>
+          <div formArrayName="options">
+            @for (opt of optionsArray.controls; track opt.get('id')?.value; let i = $index) {
+              <div [formGroupName]="i" style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <span style="font-family:'Syne',sans-serif; font-weight:800; width:28px; color:var(--text-muted);">{{ getLabel(i) }}</span>
+                <input formControlName="text" type="text" [placeholder]="'Option ' + getLabel(i)" style="flex:1; padding:10px 14px; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; font-size:0.9rem; color:var(--text); transition:border-color .3s;" />
+                <input type="radio" formControlName="id" [name]="'correct'" [value]="opt.get('id')?.value"
+                  [formControl]="$any(form.get('correctOptionId'))" style="display:none;" />
+                <button type="button"
+                  [style.background]="form.get('correctOptionId')?.value === opt.get('id')?.value ? 'rgba(74,222,128,0.2)' : 'var(--surface2)'"
+                  [style.border]="form.get('correctOptionId')?.value === opt.get('id')?.value ? '1px solid rgba(74,222,128,0.4)' : '1px solid var(--border)'"
+                  [style.color]="form.get('correctOptionId')?.value === opt.get('id')?.value ? 'var(--success)' : 'var(--text-muted)'"
+                  style="padding:8px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all .3s; white-space:nowrap; background:var(--surface2);"
+                  (click)="form.get('correctOptionId')?.setValue(opt.get('id')?.value)">
+                  {{ form.get('correctOptionId')?.value === opt.get('id')?.value ? '✓ Correct' : 'Mark Correct' }}
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveQuestion()">{{ editingId ? 'Update' : 'Add Question' }}</button>
+      </div>
+    </div>
+  </div>
+}
