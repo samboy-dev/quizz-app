@@ -45,7 +45,8 @@ database-debug.log
 pubsub-debug.log
 
 # Environment files (contain secrets)
-/src/environments/environment.*.ts
+/src/environments/environment.prod.ts
+/src/environments/environment.ts
 *.env
 .env
 .env.*
