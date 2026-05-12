@@ -10,6 +10,10 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+pnpm-debug.log
+
+# Angular cache
+/.angular/cache
 
 # IDEs and editors
 .idea/
@@ -19,6 +23,8 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+*.swp
+*.swo
 
 # Visual Studio Code
 .vscode/*
@@ -29,16 +35,39 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+ui-debug.log
+database-debug.log
+pubsub-debug.log
+
+# Environment files (contain secrets)
+src/environments/environment.prod.ts
+src/environments/environment.ts
+*.env
+.env
+.env.*
+!.env.example
+
+# Testing & coverage
+/coverage
+testem.log
+
 # Miscellaneous
-/.angular/cache
 .sass-cache/
 /connect.lock
-/coverage
 /libpeerconnection.log
-testem.log
 /typings
 __screenshots__/
 
 # System files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
