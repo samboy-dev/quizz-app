@@ -14,10 +14,13 @@ import { RankingState } from './app/store/ranking.state';
 import { withNgxsLoggerPlugin } from '@ngxs/logger-plugin';
 import { App } from './app/app';
 
+import { provideZoneChangeDetection } from '@angular/core';
+
 const app = initializeApp(environment.firebase);
 
 bootstrapApplication(App, {
     providers: [
+        provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(appRoutes),
         provideStore(
             [QuizState, SessionState, AdminState, RankingState],
