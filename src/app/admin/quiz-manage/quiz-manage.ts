@@ -1,20 +1,23 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Store } from '@ngxs/store';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Store, select } from '@ngxs/store';
 import { AdminState } from '../../store/admin.state';
 import { LoadAdminQuestions, CreateQuestion, UpdateQuestion, DeleteQuestion } from '../../store/admin.actions';
 import { Question } from '../../core/models';
 
-@Component({ standalone: false, selector: 'app-quiz-manage', templateUrl: './quiz-manage.html' })
+@Component({
+    selector: 'app-quiz-manage', templateUrl: './quiz-manage.html', styleUrl: './quiz-manage.scss',
+    imports: [ReactiveFormsModule]
+})
 export class QuizManage implements OnInit {
   private route = inject(ActivatedRoute);
   private store = inject(Store);
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
-  questions = this.store.selectSignal(AdminState.questions);
-  loading = this.store.selectSignal(AdminState.loading);
+  questions = select(AdminState.questions);
+  loading = select(AdminState.loading);
 
   quizId = '';
   showModal = false;

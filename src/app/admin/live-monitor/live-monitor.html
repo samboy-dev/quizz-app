@@ -1,11 +1,11 @@
 <div class="admin-layout">
   <header class="admin-header">
     <button class="btn btn-outline btn-sm" (click)="back()">← Back</button>
-    <div style="font-family:'Syne',sans-serif; font-weight:800; display:flex; align-items:center; gap:8px;">
-      <span style="width:8px; height:8px; background:var(--success); border-radius:50%; animation:pulse 1.5s infinite;"></span>
+    <div class="monitor-title">
+      <span class="live-dot"></span>
       Live Monitor
     </div>
-    <div style="display:flex; gap:8px;">
+    <div class="header-actions">
       <button class="btn btn-outline btn-sm" (click)="load()">Refresh</button>
       <button class="btn btn-accent btn-sm" (click)="viewRanking()">🏆 Ranking</button>
     </div>
@@ -13,49 +13,42 @@
 
   <main class="admin-content">
     @if (participants(); as parts) {
-      <div style="display:flex; gap:16px; margin-bottom:28px; flex-wrap:wrap;">
-        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 24px; flex:1; min-width:140px;">
-          <div style="font-size:2rem; font-family:'Syne',sans-serif; font-weight:800; color:var(--primary);">{{ parts.length }}</div>
-          <div style="font-size:0.8rem; color:var(--text-muted);">Total Participants</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value text-primary">{{ parts.length }}</div>
+          <div class="stat-label">Total Participants</div>
         </div>
-        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 24px; flex:1; min-width:140px;">
-          <div style="font-size:2rem; font-family:'Syne',sans-serif; font-weight:800; color:var(--success);">
+        <div class="stat-card">
+          <div class="stat-value text-success">
             {{ parts | completedCount }}
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted);">Completed</div>
+          <div class="stat-label">Completed</div>
         </div>
-        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 24px; flex:1; min-width:140px;">
-          <div style="font-size:2rem; font-family:'Syne',sans-serif; font-weight:800; color:var(--accent);">
+        <div class="stat-card">
+          <div class="stat-value text-accent">
             {{ parts.length > 0 ? (parts | avgScore) : 0 }}%
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted);">Avg Score</div>
+          <div class="stat-label">Avg Score</div>
         </div>
       </div>
 
       <h2 class="admin-section-title">Participants</h2>
 
-      @if (parts.length === 0) {
-        <div style="text-align:center; padding:60px; color:var(--text-muted);">
-          <div style="font-size:3rem; margin-bottom:16px;">⏳</div>
-          <p>Waiting for participants to join...</p>
+      @if (parts.length) {
+        <div class="monitor-grid">
+          @for (p of parts; track p.phone) {
+            <div class="monitor-card" [class.completed]="p.completedAt">
+              <div class="mc-name">{{ p.name }}</div>
+              <div class="mc-phone">{{ p.phone }}</div>
+              <div class="mc-score">{{ p.score }}<span class="mc-total">/{{ p.totalQuestions }}</span></div>
+              <div class="mc-progress">{{ p.completedAt ? '✓ Completed' : '⏳ In progress' }}</div>
+            </div>
+          }
         </div>
-      }
 
-      <div class="monitor-grid">
-        @for (p of parts; track p.phone) {
-          <div class="monitor-card" [class.completed]="p.completedAt">
-            <div class="mc-name">{{ p.name }}</div>
-            <div class="mc-phone">{{ p.phone }}</div>
-            <div class="mc-score">{{ p.score }}<span style="font-size:1rem; opacity:0.5;">/{{ p.totalQuestions }}</span></div>
-            <div class="mc-progress">{{ p.completedAt ? '✓ Completed' : '⏳ In progress' }}</div>
-          </div>
-        }
-      </div>
-
-      @if (parts.length > 0) {
-        <div style="margin-top:28px;">
+        <div class="detailed-view-section">
           <h2 class="admin-section-title">Detailed View</h2>
-          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+          <div class="table-container">
             <table class="data-table">
               <thead>
                 <tr>
@@ -68,13 +61,13 @@
               <tbody>
                 @for (p of parts; track p.phone) {
                   <tr>
-                    <td style="font-weight:600;">{{ p.name }}</td>
-                    <td style="color:var(--text-muted);">{{ p.phone }}</td>
+                    <td class="td-name">{{ p.name }}</td>
+                    <td class="td-phone">{{ p.phone }}</td>
                     <td>
-                      <span style="font-family:'Syne',sans-serif; font-weight:800; color:var(--primary);">{{ p.score }}</span>
-                      <span style="color:var(--text-muted);">/{{ p.totalQuestions }}</span>
+                      <span class="td-score">{{ p.score }}</span>
+                      <span class="td-total">/{{ p.totalQuestions }}</span>
                     </td>
-                    <td style="text-align:left !important;">
+                    <td class="td-status">
                       <span class="badge" [class.badge-active]="!p.completedAt" [class.badge-finished]="p.completedAt">
                         {{ p.completedAt ? 'Done' : 'Active' }}
                       </span>
@@ -84,6 +77,11 @@
               </tbody>
             </table>
           </div>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-state-icon">⏳</div>
+          <p>Waiting for participants to join...</p>
         </div>
       }
     }

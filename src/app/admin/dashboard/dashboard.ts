@@ -1,19 +1,22 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Store, select } from '@ngxs/store';
 import { AdminState } from '../../store/admin.state';
 import { LoadAllQuizzes, CreateQuiz, DeleteQuiz, AdminLogout, SetQuizStatus } from '../../store/admin.actions';
 import { Quiz } from '../../core/models';
 
-@Component({ standalone: false, selector: 'app-dashboard', templateUrl: './dashboard.html' })
+@Component({
+    selector: 'app-dashboard', templateUrl: './dashboard.html', styleUrl: './dashboard.scss',
+    imports: [ReactiveFormsModule]
+})
 export class Dashboard implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
-  quizzes = this.store.selectSignal(AdminState.quizzes);
-  loading = this.store.selectSignal(AdminState.loading);
+  quizzes = select(AdminState.quizzes);
+  loading = select(AdminState.loading);
 
   showModal = false;
   createForm!: FormGroup;

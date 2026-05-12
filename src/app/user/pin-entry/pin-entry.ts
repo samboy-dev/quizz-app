@@ -1,20 +1,23 @@
 import { Component, OnInit, inject, effect } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { Store, select } from '@ngxs/store';
 import { LoadQuizByPin, ResetQuiz } from '../../store/quiz.actions';
 import { QuizState } from '../../store/quiz.state';
 import { ResetSession } from '../../store/session.actions';
 
-@Component({ standalone: false, selector: 'app-pin-entry', templateUrl: './pin-entry.html', styleUrls: ['./pin-entry.scss'] })
+@Component({
+    selector: 'app-pin-entry', templateUrl: './pin-entry.html', styleUrl: './pin-entry.scss',
+    imports: [ReactiveFormsModule, RouterLink]
+})
 export class PinEntry implements OnInit {
   private fb = inject(FormBuilder);
   private store = inject(Store);
   private router = inject(Router);
 
-  loading = this.store.selectSignal(QuizState.loading);
-  error = this.store.selectSignal(QuizState.error);
-  activeQuiz = this.store.selectSignal(QuizState.activeQuiz);
+  loading = select(QuizState.loading);
+  error = select(QuizState.error);
+  activeQuiz = select(QuizState.activeQuiz);
 
   form!: FormGroup;
 

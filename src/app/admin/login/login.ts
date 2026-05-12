@@ -1,18 +1,21 @@
 import { Component, OnInit, inject, effect } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { Store, select } from '@ngxs/store';
 import { AdminLogin } from '../../store/admin.actions';
 import { AdminState } from '../../store/admin.state';
 
-@Component({ standalone: false, selector: 'app-login', templateUrl: './login.html' })
+@Component({
+    selector: 'app-login', templateUrl: './login.html', styleUrl: './login.scss',
+    imports: [ReactiveFormsModule, RouterLink]
+})
 export class Login implements OnInit {
   private fb = inject(FormBuilder);
   private store = inject(Store);
   private router = inject(Router);
 
-  error = this.store.selectSignal(AdminState.error);
-  isAuthenticated = this.store.selectSignal(AdminState.isAuthenticated);
+  error = select(AdminState.error);
+  isAuthenticated = select(AdminState.isAuthenticated);
   form!: FormGroup;
 
   constructor() {

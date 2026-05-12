@@ -6,9 +6,9 @@
     </div>
 
     @if (activeQuiz(); as quiz) {
-      <div style="margin-bottom:24px; padding:14px 18px; background:var(--surface2); border-radius:var(--radius-sm); border:1px solid var(--border);">
-        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Joining</div>
-        <div style="font-weight:700; font-size:1.1rem;">{{ quiz.title }}</div>
+      <div class="joining-card">
+        <div class="joining-label">Joining</div>
+        <div class="joining-title">{{ quiz.title }}</div>
       </div>
     }
 

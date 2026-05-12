@@ -1,0 +1,20 @@
+.joining-card {
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.joining-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.joining-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,55 @@
+.bracket-content {
+  width: 100%;
+  max-width: 800px;
+}
+
+.bracket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-muted);
+
+  .empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+  }
+}
+
+.podium-margin {
+  margin-bottom: 48px;
+}
+
+.podium-anim-1 { animation: fadeInUp 0.5s 0s ease both; }
+.podium-anim-2 { animation: fadeInUp 0.5s 0.2s ease both; }
+.podium-anim-3 { animation: fadeInUp 0.5s 0.4s ease both; }
+
+.crown-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.leaderboard-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.leaderboard-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.row-anim {
+  animation: fadeInUp 0.4s ease both;
+}

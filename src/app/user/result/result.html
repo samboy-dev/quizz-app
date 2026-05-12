@@ -1,36 +1,36 @@
 <div class="page-wrapper">
-  <div class="card" style="text-align:center;">
+  <div class="card result-card">
     @if (session(); as sess) {
-      <div style="font-size:4rem; margin-bottom:16px; animation: popIn 0.5s ease forwards;">{{ getEmoji() }}</div>
+      <div class="result-emoji">{{ getEmoji() }}</div>
 
-      <h1 class="page-title" style="justify-content:center; margin-bottom:8px;">
+      <h1 class="page-title result-title">
         Nice work, <span>{{ sess.name }}!</span>
       </h1>
-      <p class="page-subtitle" style="margin-bottom:32px;">Quiz completed. Here's how you did.</p>
+      <p class="page-subtitle result-subtitle">Quiz completed. Here's how you did.</p>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px;">
-        <div style="background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px;">
-          <div style="font-size:2.2rem; font-family:'Syne',sans-serif; font-weight:800; color:var(--primary);">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-value text-primary">
             {{ score() }}
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Correct Answers</div>
+          <div class="stat-label">Correct Answers</div>
         </div>
-        <div style="background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px;">
-          <div style="font-size:2.2rem; font-family:'Syne',sans-serif; font-weight:800; color:var(--accent);">
+        <div class="stat-box">
+          <div class="stat-value text-accent">
             {{ percentage }}%
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Accuracy</div>
+          <div class="stat-label">Accuracy</div>
         </div>
       </div>
 
-      <div class="progress-bar" style="margin-bottom:8px; height:8px; border-radius:4px;">
+      <div class="progress-bar result-progress-bar">
         <div class="progress-fill" [style.width.%]="percentage"></div>
       </div>
-      <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:32px;">
+      <div class="result-total-text">
         {{ score() }} out of {{ sess.totalQuestions }} questions
       </div>
 
-      <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="action-buttons">
         <button class="btn btn-primary" (click)="goToRanking()">🏆 View Leaderboard</button>
         <button class="btn btn-outline" (click)="playAgain()">Play Another Quiz</button>
       </div>

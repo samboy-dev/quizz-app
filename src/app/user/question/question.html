@@ -1,22 +1,22 @@
-<div class="page-wrapper" style="align-items: flex-start; padding-top: 40px;">
-  <div class="card" style="max-width: 560px;">
+<div class="page-wrapper question-wrapper">
+  <div class="card question-card">
     @if (currentQuestion(); as q) {
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div class="question-header">
         <div>
-          <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.08em;">
+          <span class="question-progress-text">
             Question {{ currentIndex() + 1 }} of {{ questions().length }}
           </span>
         </div>
-        <div style="font-family:'Syne',sans-serif; font-weight:800; color:var(--primary);">
+        <div class="score-display">
           Score: {{ score() }}
         </div>
       </div>
 
-      <div class="progress-bar" style="margin-bottom:28px;">
+      <div class="progress-bar question-progress-bar">
         <div class="progress-fill" [style.width.%]="progress()"></div>
       </div>
 
-      <h2 style="font-size:1.25rem; font-weight:700; margin-bottom:28px; line-height:1.5;">
+      <h2 class="question-text">
         {{ q.text }}
       </h2>
 
@@ -36,9 +36,8 @@
       </div>
 
       @if (answered) {
-        <div style="margin-top:16px;">
-          <div class="alert" [class.alert-success]="selectedOptionId===correctOptionId" [class.alert-error]="selectedOptionId!==correctOptionId"
-            style="margin-bottom:16px;">
+        <div class="feedback-container">
+          <div class="alert feedback-alert" [class.alert-success]="selectedOptionId===correctOptionId" [class.alert-error]="selectedOptionId!==correctOptionId">
             <span>{{ selectedOptionId === correctOptionId ? '✓ Correct!' : '✗ Wrong answer' }}</span>
           </div>
           <button class="btn btn-primary" (click)="next()">

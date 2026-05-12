@@ -1,18 +1,21 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Store, select } from '@ngxs/store';
 import { QuizState } from '../../store/quiz.state';
 import { CreateSession } from '../../store/session.actions';
 import { LoadQuestions } from '../../store/quiz.actions';
 
-@Component({ standalone: false, selector: 'app-register', templateUrl: './register.html' })
+@Component({
+    selector: 'app-register', templateUrl: './register.html', styleUrl: './register.scss',
+    imports: [ReactiveFormsModule]
+})
 export class Register implements OnInit {
   private fb = inject(FormBuilder);
   private store = inject(Store);
   private router = inject(Router);
 
-  activeQuiz = this.store.selectSignal(QuizState.activeQuiz);
+  activeQuiz = select(QuizState.activeQuiz);
   form!: FormGroup;
   loading = false;
 

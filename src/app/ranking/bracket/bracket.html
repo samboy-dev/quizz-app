@@ -1,7 +1,7 @@
 <div class="bracket-container">
-  <div style="width:100%; max-width:800px;">
+  <div class="bracket-content">
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div class="bracket-header">
       <button class="btn btn-outline btn-sm" (click)="goHome()">← Home</button>
       <div></div>
     </div>
@@ -11,24 +11,14 @@
 
     @if (loading()) {
       <div class="loader"><div class="spinner"></div><p>Loading rankings...</p></div>
-    }
-
-    @if (!loading()) {
+    } @else {
       @if (participants(); as parts) {
-
-        @if (parts.length === 0) {
-          <div style="text-align:center; padding:60px; color:var(--text-muted);">
-            <div style="font-size:3rem; margin-bottom:16px;">🏜️</div>
-            <p>No participants yet.</p>
-          </div>
-        }
-
-        <!-- PODIUM (top 3) -->
-        @if (parts.length >= 1) {
-          <div class="podium" style="margin-bottom:48px;">
+        @if (parts.length) {
+          <!-- PODIUM (top 3) -->
+          <div class="podium podium-margin">
             <!-- 2nd place -->
             @if (parts[1]) {
-              <div class="podium-item rank-2" style="animation: fadeInUp 0.5s 0.2s ease both;">
+              <div class="podium-item rank-2 podium-anim-2">
                 <div class="podium-avatar">{{ getInitials(parts[1].name) }}</div>
                 <div class="podium-name">{{ parts[1].name }}</div>
                 <div class="podium-score">{{ parts[1].score }}/{{ parts[1].totalQuestions }}</div>
@@ -36,8 +26,8 @@
               </div>
             }
             <!-- 1st place -->
-            <div class="podium-item rank-1" style="animation: fadeInUp 0.5s 0s ease both;">
-              <div style="font-size:1.5rem; margin-bottom:4px;">👑</div>
+            <div class="podium-item rank-1 podium-anim-1">
+              <div class="crown-icon">👑</div>
               <div class="podium-avatar">{{ getInitials(parts[0].name) }}</div>
               <div class="podium-name">{{ parts[0].name }}</div>
               <div class="podium-score">{{ parts[0].score }}/{{ parts[0].totalQuestions }}</div>
@@ -45,7 +35,7 @@
             </div>
             <!-- 3rd place -->
             @if (parts[2]) {
-              <div class="podium-item rank-3" style="animation: fadeInUp 0.5s 0.4s ease both;">
+              <div class="podium-item rank-3 podium-anim-3">
                 <div class="podium-avatar">{{ getInitials(parts[2].name) }}</div>
                 <div class="podium-name">{{ parts[2].name }}</div>
                 <div class="podium-score">{{ parts[2].score }}/{{ parts[2].totalQuestions }}</div>
@@ -53,19 +43,16 @@
               </div>
             }
           </div>
-        }
 
-        <!-- FULL BRACKET TREE -->
-        @if (parts.length > 0) {
-          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px;">
-            <h3 style="font-size:1rem; font-weight:700; margin-bottom:20px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em;">
+          <!-- FULL BRACKET TREE -->
+          <div class="leaderboard-section">
+            <h3 class="leaderboard-title">
               Full Leaderboard
             </h3>
             <div class="bracket-tree">
               @for (p of parts; track p.phone; let i = $index) {
-                <div class="bracket-row"
+                <div class="bracket-row row-anim"
                   [class.top-rank]="i < 3"
-                  style="animation: fadeInUp 0.4s ease both;"
                   [style.animation-delay]="(i * 0.06) + 's'">
                   <div class="rank-num">#{{ i + 1 }}</div>
                   <div class="rank-bar-wrap">
@@ -77,6 +64,11 @@
                 </div>
               }
             </div>
+          </div>
+        } @else {
+          <div class="empty-state">
+            <div class="empty-state-icon">🏜️</div>
+            <p>No participants yet.</p>
           </div>
         }
       }

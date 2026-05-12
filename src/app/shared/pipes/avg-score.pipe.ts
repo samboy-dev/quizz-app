@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { UserSession } from '../../core/models';
-@Pipe({ standalone: false, name: 'avgScore' })
+@Pipe({ name: 'avgScore' })
 export class AvgScorePipe implements PipeTransform {
   transform(sessions: UserSession[]): number {
     if (!sessions.length) return 0;

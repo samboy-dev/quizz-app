@@ -1,23 +1,25 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Store, select } from '@ngxs/store';
 import { QuizState } from '../../store/quiz.state';
 import { SessionState } from '../../store/session.state';
 import { SubmitAnswer, CompleteSession } from '../../store/session.actions';
 import { NextQuestion } from '../../store/quiz.actions';
 import { Option } from '../../core/models';
 
-@Component({ standalone: false, selector: 'app-question', templateUrl: './question.html', styleUrls: ['./question.scss'] })
+@Component({
+    selector: 'app-question', templateUrl: './question.html', styleUrl: './question.scss'
+})
 export class Question implements OnInit {
   private store = inject(Store);
   private router = inject(Router);
 
-  currentQuestion = this.store.selectSignal(QuizState.currentQuestion);
-  currentIndex = this.store.selectSignal(QuizState.currentIndex);
-  questions = this.store.selectSignal(QuizState.questions);
-  progress = this.store.selectSignal(QuizState.progress);
-  isLast = this.store.selectSignal(QuizState.isLastQuestion);
-  score = this.store.selectSignal(SessionState.score);
+  currentQuestion = select(QuizState.currentQuestion);
+  currentIndex = select(QuizState.currentIndex);
+  questions = select(QuizState.questions);
+  progress = select(QuizState.progress);
+  isLast = select(QuizState.isLastQuestion);
+  score = select(SessionState.score);
 
   selectedOptionId: string | null = null;
   answered = false;

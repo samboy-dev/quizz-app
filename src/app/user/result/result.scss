@@ -1,0 +1,65 @@
+.result-card {
+  text-align: center;
+}
+
+.result-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  animation: popIn 0.5s ease forwards;
+}
+
+.result-title {
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.result-subtitle {
+  margin-bottom: 32px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.stat-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+}
+
+.stat-value {
+  font-size: 2.2rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+
+  &.text-primary { color: var(--primary); }
+  &.text-accent { color: var(--accent); }
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.result-progress-bar {
+  margin-bottom: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.result-total-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
